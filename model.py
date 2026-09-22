@@ -81,8 +81,13 @@ def build_diffusion_schedule(T=100,
         "T": int(T),
     }
 
-# Step 7 - noise_prediction_loss (not yet solved)
-# TODO: implement
+# Step 7 - noise_prediction_loss
+import torch
+import torch.nn.functional as F
+
+def noise_prediction_loss(noise_pred, noise):
+    # TODO: MSE between predicted and true noise
+    return torch.mean((noise_pred-noise)**2)
 
 # Step 8 - diffusion_training_loss (not yet solved)
 # TODO: implement
