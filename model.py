@@ -119,8 +119,52 @@ def timestep_embedding(t, dim: int):
     timestep_enbed=torch.cat([torch.sin(angles),torch.cos(angles)],dim=1)
     return timestep_enbed
 
-# Step 10 - init_tiny_unet (not yet solved)
-# TODO: implement
+# Step 10 - init_tiny_unet
+import torch
+import torch.nn.functional as F
+
+def init_tiny_unet(in_ch: int = 1, hidden: int = 16, time_dim: int = 16, seed: int = 0) -> dict:
+    # TODO: initialize tiny residual denoiser parameters
+    torch.manual_seed(seed)
+
+    params = {
+        "conv_in_w": torch.randn(
+            hidden, in_ch, 3, 3
+        ) * 0.02,
+
+        "conv_in_b": torch.zeros(
+            hidden
+        ),
+
+        "time_mlp_w": torch.randn(
+            hidden, time_dim
+        ) * 0.02,
+
+        "time_mlp_b": torch.zeros(
+            hidden
+        ),
+
+        "conv_mid_w": torch.randn(
+            hidden, hidden, 3, 3
+        ) * 0.02,
+
+        "conv_mid_b": torch.zeros(
+            hidden
+        ),
+
+        "conv_out_w": torch.randn(
+            in_ch, hidden, 3, 3
+        ) * 0.02,
+
+        "conv_out_b": torch.zeros(
+            in_ch
+        ),
+    }
+
+    for p in params.values():
+        p.requires_grad_()
+
+    return params
 
 # Step 11 - tiny_unet_forward (not yet solved)
 # TODO: implement
